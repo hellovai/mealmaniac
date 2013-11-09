@@ -1,6 +1,6 @@
 <%= include header %>
 
-<body style="background-color:#FFFFFF">
+<body style="background-color:#FFFFFF" onload="redirect()">
   
   <div align="center">
     </br>
@@ -20,7 +20,11 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
   </script>
     <script>
-      var base_url = "http://localhost:5000/";
+      function redirect()
+      {
+        var logged-in
+      }
+      var base_url = "http://ec2-54-200-88-29.us-west-2.compute.amazonaws.com:8080/";
       form = document.getElementById("loginForm");
       function login() {
         var email = document.getElementById('email').value;
@@ -31,7 +35,9 @@
         .done(function (data) {
           localStorage.setItem('user', JSON.stringify(data))
         });
+        localStorage.setItem('logged-in', 'yes');
         if(JSON.parse(localStorage.getItem('user'))['id'] !=0) window.location="order";
+
       }
       function signup() {
         var email = document.getElementById('email').value;
@@ -56,6 +62,7 @@
         user.phone="";
         user.email="";
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('logged-in', 'yes');
         window.location="settings";
       }
     </script>
