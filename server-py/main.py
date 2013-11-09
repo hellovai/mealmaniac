@@ -136,11 +136,17 @@ class meal(object):
 def hello_world():
     return 'Hoes better download the app'
 
+
+@crossdomain(origin='*')
 @app.route('/address/<uid>/<nick>')
 def get_addr(uid, nick):
 	return api.get_addr(uid,nick)
 
-# @app.route('/settings/<uid>/<first>/<last>/<address>/<nick>/<phone>/<delivery>/<tip>/<veg>/<gluten>/<allergies>/<card>')
+
+@crossdomain(origin='*')
+@app.route('/settings/<uid>/<first>/<last>/<address>/<nick>/<phone>/<delivery>/<tip>/<veg>/<gluten>/<allergies>/<card>')
+def place_order():
+	return api.order()
 
 @app.route('/newcard/<uid>/<cc>/<exp>/<code>')
 def add_card(uid, cc, exp, code):
@@ -153,7 +159,6 @@ def add_addr(uid, street, city, zip):
 	api.addCard(uid, street, city, zip)
 	return json.dumps({"status":"success"})
 
-
 @app.route('/login/<email>/<pwd>')
 @crossdomain(origin='*')
 def login(email, pwd):
@@ -161,8 +166,9 @@ def login(email, pwd):
 	user = api.getUser(uid)
 	return json.dumps(user)
 
-@crossdomain(origin='*')
+
 @app.route('/meal/<uid>/<price>/<nick>')
+@crossdomain(origin='*')
 def getMeal(uid, price, nick):
 	user = api.getUser(uid)
 	nearby = api.search(uid, nick)
@@ -215,7 +221,7 @@ def getMeal(uid, price, nick):
 		else:
 			score = score - 0.01
 				# print "swap"
-	return json.dumps({"core":meals, "total": spent * 1.0875 * (1 + float(user["tip"])/100) })
+	return json.dumps({"core":meals, "total": spent })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

@@ -36,7 +36,15 @@ def getAddr(uid,nick):
 def getCard(uid,nick):
         if nick not in users[uid]["card"]:
                 users[uid]["card"][nick] = {
-                                "number":"**** **** **** 2897"
+                                "card_name":users[uid]["first_name"] + " " + users[uid]["last_name"]
+                                "card_number":"4111111111111111",
+                                "card_cvc":"123",
+                                "card_expiry":"02/2016",
+                                "card_bill_addr":"1 Main Street",
+                                "card_bill_city":"College Station",
+                                "card_bill_state":"TX",
+                                "card_bill_zip":"77840",
+                                "card_bill_phone":"2345678901"
                                 } 
         return users[uid]["card"][nick]
 
@@ -110,4 +118,8 @@ def getDetails(rid):
         data = restaurants[rid]
         return json.loads(data)
 
+def order():
+        return {
+                "status":"success"
+                }
 
