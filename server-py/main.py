@@ -78,6 +78,14 @@ class meal(object):
 def hello_world():
     return 'Hoes better download the app'
 
+@app.route('/address/<uid>')
+
+@app.route('/settings/<uid>/<first>/<last>/<address>/<nick>/<phone>/<delivery>/<tip>/<veg>/<gluten>/<allergies>/<card>')
+
+@app.route('/newcard/<uid>/card')
+
+@app.route('/newaddress/<uid>/<address>')
+
 @crossdomain(origin='*')
 @app.route('/login/<email>/<pwd>')
 def login(email, pwd):
