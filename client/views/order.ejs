@@ -8,7 +8,8 @@
 
     
     <div class="page-header" align="center">
-      <h1><img src="../public/img/Logo.png"/><a href="settings">
+      <h1>
+      <img src="img/Logo.png" ><a href="settings">
         <!-- <img src="http://www.clker.com/cliparts/j/V/R/4/3/s/cog-cogwheel-gear-zahnrad-md.png" height="20" width="20" class="img-responsive" alt="Responsive image"> -->
       </a></h1>
     </div>
@@ -95,11 +96,10 @@
               localStorage.setItem("lameness", 1);
             }
             function showMeal() {
-              var user = JSON.parse(localStorage.getItem("user"));
-              var base_url = "http://ec2-54-200-88-29.us-west-2.compute.amazonaws.com:8080/";
+              var base_url = "http://mealmaniac.com:8080/";
               var price = document.getElementById("price").value;
               $.ajax({
-                url:base_url + "meal/" + user['id'] + "/" + price +"/"+localStorage.currentAddress
+                url:base_url + "meal/" + 7447 + "/" + price +"/"+"Home"
               })
               .done(function (data) {
                 localStorage.setItem("order", JSON.stringify(data));
@@ -120,16 +120,11 @@
             }
             function displayAddresses()
             {
-              localStorage.setItem('currentAddress', JSON.parse(localStorage.getItem('user')).nicks[0]);
-              var addresses = JSON.parse(localStorage.getItem('user')).nicks;
-              for (var i=0;i<addresses.length;i++){
-                document.getElementById('addressList').innerHTML+="<option value='"+i+"'>" +addresses[i]+"</option>";
-              }
+              
             }
             function selectCurrentAddress()
             {
-                var choice = document.getElementById('addressList').value;
-                localStorage.setItem('currentAddress', JSON.parse(localStorage.getItem('user')).nicks[choice]);
+                
             }
             function continueOn()
             {
