@@ -33,7 +33,23 @@
         if(JSON.parse(localStorage.getItem('user'))['id'] !=0) window.location="order";
       }
       function signup() {
-        //window.location="order";
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        $.ajax({
+          url:base_url + "signup/" + email + "/" + password
+        })
+        .done(function (data) {
+          localStorage.setItem('user', JSON.stringify(data))
+        });
+        var user = JSON.parse(localStorage.getItem('user'));
+        user.addresses=new Array();
+        user.nicks=new Array();
+        user.restrictions="";
+        user.cards=new Array();
+        user.vegetarian="No";
+        user.gluten="No";
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location="settings";
       }
     </script>
     
