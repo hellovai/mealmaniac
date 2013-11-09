@@ -1,75 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Header</title>
-    <!--<style type="text/css" src="../public/css/bootstrap.css"></style>
-    <!- HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<%= include header %>
+  <body align="center" class="span6">
 
-    <!-- styles -->
-    <link href="stylesheets/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../public/css/bootstrap.css">
+    <div align="center" class="container span6">
+    </div>
 
-  </head>
-  <body align="center">
-    <div>
-      Meal Maniac
-      <a href="settings">
-        <img src="http://files.softicons.com/download/system-icons/web0.2ama-icons-by-chrfb/png/96x96/Settings.png" height="20" width="20" align="right" class="img-responsive" alt="Responsive image">
-      </a>
-    </div>
-    <div>
-     <select id = "addressList">
-     </select>
-     <script>
-      
-      function displayAddresses(){
-        var addresses = JSON.parse(localStorage.addresses);
-        for (var i=0;i<addresses.length;i++){
-          document.getElementById('addressList').innerHTML+="<option value='"+i+"'>" +addresses[i][0]+"</option>";
-        }
-      }
-     </script>
-   </div>
-    <div>
-      <input type=range id='priceslider' min=0 max=50 value=25 step=1 onchange="outputUpdate(value)">
-    </div>
-    <div>
-      $<output id=price>25</output>
-      <script>
-
-        function outputUpdate(price) {
-        document.querySelector('#price').value = price;
-        }
-      </script>
-    </div>
-    <span style="white-space:nowrap">
-      <div style="float:left">
-        <input type="button" value="MANIA" onclick="">
+    <div align="center" class="container span6">
+      <div class="page-header">
+        <h1><img src="http://i.picresize.com/images/2013/11/09/L0awx.png"/> Meal Maniac <a href="settings">
+          <img src="http://files.softicons.com/download/system-icons/web0.2ama-icons-by-chrfb/png/96x96/Settings.png" height="20" width="20" align="right" class="img-responsive" alt="Responsive image">
+        </a></h1>
       </div>
-      <div style="float:right">
 
-        <input type="button" value="GO" onclick="urlChange()">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <div align="center" class="container span6">
+       <select id = "addressList">
+       </select>
+       <script>
+        function displayAddresses(){
+          var addresses = JSON.parse(localStorage.addresses);
+          for (var i=0;i<addresses.length;i++){
+            document.getElementById('addressList').innerHTML+="<option value='"+i+"'>" +addresses[i][0]+"</option>";
+          }
+        }
+       </script>
+      </div>
+      
+      <div>
+        Maximum Willing to Pay
+      </div>
+      <div>
+        <input type=range id='priceslider' min=5 max=50 value=25 step=1 onchange="outputUpdate(value)">
+      </div>
+      <h1>
+        $<output id=price>25</output>
         <script>
-          function urlChange() {
-            var user = JSON.parse(localStorage.getItem('user'));
-            var base_url = "http://localhost:5000/";
-            var price = document.getElementById('price').value;
-            $.ajax({
-              url:base_url + "meal/" + user['id'] + "/" + price +"/"+"trolol"
-            })
-            .done(function (data) {
-              localStorage.setItem('order', JSON.stringify(data));
-            });
-            window.location = "confirm";
-            
+
+          function outputUpdate(price) {
+          document.querySelector('#price').value = price;
           }
         </script>
-      </div>
-    </span>
-  </body>
-</html>
+      </h1>
+      <span style="white-space:nowrap">
+        <div align="center">
+          <a href="#" class="btn btn-large btn-danger" onclick="">MANIA</a>
+          <a href="#" class="btn btn-large btn-success offset1" onclick="urlChange()">GO</a>
+<!--    
+          <input type="button" value="MANIA" onclick="">
+          <input class="offset1" type="button" value="GO" onclick="urlChange()">
+ -->
+          <script >
+              $('#sl1').slider();
+          </script>
+          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+          <script>
+            function urlChange() {
+              var user = JSON.parse(localStorage.getItem('user'));
+              var base_url = "http://localhost:5000/";
+              var price = document.getElementById('price').value;
+              $.ajax({
+                url:base_url + "meal/" + user['id'] + "/" + price +"/"+"trolol"
+              })
+              .done(function (data) {
+                localStorage.setItem('order', JSON.stringify(data));
+              });
+              window.location = "confirm";
+              
+            }
+          </script>
+        </div>
+      </span>
+    </div>
+<%= include footer %>
