@@ -6,9 +6,9 @@ import datetime
 base_url = "https://r-test.ordr.in/"
 api_key = "JSxnQl1yk5bIHYUgfubPm6KY4OS_Frwq7-iawxqmoIs"
 
+email = {}
 users = {}
-address = {}
-card = {}
+restaurants = {}
 x = 0
 
 def constructURL(call, fields):
@@ -24,42 +24,51 @@ def fill(base, additions):
                         base[key] = additions[key]
         return base
 
-def getAddr(nick):
-        if nick not in address:
-                address[nick] = {
+def getAddr(uid,nick):
+        if nick not in users[uid]["address"]:
+                users[uid]["address"][nick] = {
                                 "addr":"625 6th Ave",
                                 "city":"New York",
                                 "zip":"11215"
                                 }
-        return address[nick]
+        return users[uid]["address"][nick]
 
-def getCard(nick):
-        if nick not in card:
-                card[nick] = {
-                                "number":"1111222233334444"
+def getCard(uid,nick):
+        if nick not in users[uid]["card"]:
+                users[uid]["card"][nick] = {
+                                "number":"**** **** **** 2897"
                                 } 
-        return card[nick]
+        return users[uid]["card"][nick]
 
-def getUser(email):
-        if email not in users:
-                users[email] = {
-                                "id":str(random.randrange(1000000)),
+def getUid(email, pwd):
+        if email not in email_db:
+                email_db[email] = random.randrange(1000000)
+        return email_db[email]
+
+def getUser(uid):
+        if uid not in users:
+                users[uid] = {
+                                "id":uid,
                                 "first_name":"John",
                                 "last_name":"Doe",
                                 "restrictions":"",
                                 "phone":"1234567890",
                                 "tip":"15",
+                                "address":{},
+                                "card":{}
                                 }
-        return users[email]
+        return users[uid]
 
 def valid(item):
         today = set([datetime.datetime.now().strftime("%A").lower()])
         other = set(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]).difference(today)
+        good = set([])
+        bad = set(["beverage", "water", "smoothie", "drink", "alcohol", "alcoholic", "non-alcoholic"])
         t = set(item["name"].lower().split(' '))
-        if len(t.intersection(today)) > 0:
-                return True
-        elif len(t.intersection(other)) > 0:
+        if len(t.intersection(bad)) > 0:
                 return False
+        elif len(t.intersection(good)) > 0:
+                return True
         return True        
 
 def checkFlexibility(title):
@@ -80,7 +89,7 @@ def cuisineCheck(cuisines, userid):
                 return True
         return False
 
-def search(addr_nick):
+def search(uid, addr_nick):
         call = "dl/datetime/zip/city/addr"
         fields = {
                 "datetime":"ASAP",
@@ -88,15 +97,17 @@ def search(addr_nick):
                 "city":"New York",
                 "zip":"11215"
                 }
-        fields = fill(fields, getAddr(addr_nick))
+        fields = fill(fields, getAddr(uid, addr_nick))
         url = constructURL(call, fields)
         data = urllib2.urlopen(url).read()
         return json.loads(data)
 
 def getDetails(rid):
-        call = "rd/" + str(rid)
-        url = constructURL(call, {})
-        data = urllib2.urlopen(url).read()
+        if rid not in restaurants:
+                call = "rd/" + str(rid)
+                url = constructURL(call, {})
+                restaurants[rid] = urllib2.urlopen(url).read()
+        data = restaurants[rid]
         return json.loads(data)
 
 

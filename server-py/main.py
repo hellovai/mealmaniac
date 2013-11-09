@@ -4,6 +4,7 @@ from datetime import timedelta
 from flask import Flask, make_response, request, current_app
 from functools import update_wrapper
 import random
+import math
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -55,60 +56,133 @@ class meal(object):
 		super(meal, self).__init__()
 		self.id = item["id"]
 		self.name = item["name"]
-		self.price = item["price"]
+		self.price = float(item["price"])
 		self.desc = item["descrip"]
+		self.rest = -1 if u'rest' not in item else item[u'rest']
 		self.options = {}
 
 	def toDict(self):
-		return {
+		res = {
 			"id":self.id,
 			"name":self.name,
 			"price":self.price,
 			"desc":self.desc,
-			"options":self.options
-		}
+			}
+		if self.rest != -1:
+			rest = api.getDetails(self.rest)
+			res["rest"] = {
+				"id": self.rest,
+				"name": rest["name"],
+				"phone": rest["cs_contact_phone"]
+				}
+		if len(self.options) > 0:
+			res["options"] = {}
+			for key in self.options:
+				option = self.options[key]
+				if key not in res["options"]:
+					res["options"][key] = []
+					for item in option["data"]:
+						res["options"][key].append(item.toDict())
+		return res
 
 	def addOption(self, key, option, choice=True):
 		if key not in self.options:
 			self.options[key] = {"flexible":choice, "data":[]}
 		self.options[key]["data"].append(option)
+
+	def pickOptions(self, price):
+		balance = price - self.price
+		copy = meal({"id":self.id, "name":self.name, "price":self.price, "descrip":self.desc, "rest": self.rest})
+		for key in self.options:
+			option = self.options[key]
+			update = []
+			used = set()
+			for item in option["data"]:
+				if item.price <= balance:
+					update.append(item)
+			if len(update) == 0:
+				pick = -1
+			else:
+				pick = update[random.randrange(len(update))]
+				copy.addOption(key, pick)
+				balance = balance - pick.price
+				used.update(pick.toDict())
+			if option["flexible"]:
+				ctr = 2
+				while pick != -1 and balance > 0:
+					update = []
+					for item in option["data"]:
+						if item.price <= balance and item not in used:
+							update.append(item)
+					if len(update) == 0 or math.log(ctr)/5.0 < random.random():
+						pick = -1
+					elif ctr/5.0 < random.random():
+						pick = update[random.randrange(len(update))]
+						copy.addOption(key, pick)
+						balance = balance - pick.price
+						ctr = ctr + 1
+						used.update(pick.toDict())
+					else:
+						pick = -1
+		return copy, price - balance
+
+
+
+
+
 		
 @crossdomain(origin='*')
 @app.route('/')
 def hello_world():
     return 'Hoes better download the app'
 
-@app.route('/address/<uid>')
+@app.route('/address/<uid>/<nick>')
+def get_addr(uid, nick):
+	return api.get_addr(uid,nick)
 
-@app.route('/settings/<uid>/<first>/<last>/<address>/<nick>/<phone>/<delivery>/<tip>/<veg>/<gluten>/<allergies>/<card>')
+# @app.route('/settings/<uid>/<first>/<last>/<address>/<nick>/<phone>/<delivery>/<tip>/<veg>/<gluten>/<allergies>/<card>')
 
-@app.route('/newcard/<uid>/card')
+@app.route('/newcard/<uid>/<cc>/<exp>/<code>')
+def add_card(uid, cc, exp, code):
+	api.addCard(uid, cc, exp, code)
+	return json.dumps({"status":"success"})
+
 
 @app.route('/newaddress/<uid>/<address>')
+def add_addr(uid, street, city, zip):
+	api.addCard(uid, street, city, zip)
+	return json.dumps({"status":"success"})
 
 @crossdomain(origin='*')
 @app.route('/login/<email>/<pwd>')
 def login(email, pwd):
-	user = api.getUser(email)
+	uid = api.getUid(email, pwd)
+	user = api.getUser(uid)
 	return json.dumps(user)
 
 @crossdomain(origin='*')
 @app.route('/meal/<uid>/<price>/<nick>')
 def getMeal(uid, price, nick):
 	user = api.getUser(uid)
-	nearby = api.search(nick)
-	price = int(10000 * float(price) / (100 + float(user["tip"]))) / 100.0
-	print price
+	nearby = api.search(uid, nick)
+	price = int(10000 * float(price) / (100 + float(user["tip"]) )) / 100.0 / 1.0875
 	# return json.dumps(nearby)
-	choices = []
+	choices_outer = []
 	for rest in nearby:
 		if rest["mino"] <= price and rest["is_delivering"] == 1:
 			rest_data = api.getDetails(rest["id"])
+			choices = []
+			addons = []
 			if api.cuisineCheck(rest_data["cuisine"], uid):
 				for category in rest_data["menu"]:
 					for listing in category["children"]:
-						if float(listing["price"]) < price:
+						if float(listing["price"]) <= price:
+							listing["rest"] = rest["id"]
 							foodItem = meal(listing)
+							if foodItem.price < 4.85 or foodItem.price < 0.6 * price or not api.valid(listing):
+								base = addons
+							else:
+								base = choices
 							if "children" in listing:
 								for option in listing["children"]:
 									if api.valid(option):
@@ -117,10 +191,30 @@ def getMeal(uid, price, nick):
 										if "children" in option:
 											for op in option["children"]:
 												optionItem = meal( op )
-												foodItem.addOption(title, optionItem.toDict(), flex)
-							choices.append(foodItem.toDict())
-	random_index = random.randrange(len(choices))
-	return json.dumps(choices[random_index])
+												foodItem.addOption(title, optionItem, flex)
+							base.append(foodItem)
+			choices_outer.append([choices, addons])
+	meals = []
+	spent = 0
+	score = 0
+	while score < random.random():
+		rest_index = random.randrange(len(choices_outer))
+		rest_pick = choices_outer[rest_index]
+		if len(rest_pick[0]) != 0:
+			meal_index = random.randrange(len(rest_pick[0]))
+			meal_pick = rest_pick[0][meal_index]
+			final_meal, total_price = meal_pick.pickOptions(price)
+			if total_price <= price - spent:
+				meals.append(final_meal.toDict())
+				spent = spent + total_price
+			elif spent < total_price:
+				meals = final_meal.toDict()
+				spent = total_price
+			score = (float(spent)/price)**2 + score
+		else:
+			score = score - 0.01
+				# print "swap"
+	return json.dumps({"core":meals, "total": spent * 1.0875 * (1 + float(user["tip"])/100) })
 
 if __name__ == '__main__':
     app.run(debug=True)
