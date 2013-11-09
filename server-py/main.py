@@ -131,30 +131,31 @@ class meal(object):
 
 
 		
-@crossdomain(origin='*')
 @app.route('/')
+@crossdomain(origin='*')
 def hello_world():
     return 'Hoes better download the app'
 
-
-@crossdomain(origin='*')
 @app.route('/address/<uid>/<nick>')
+@crossdomain(origin='*')
 def get_addr(uid, nick):
 	return api.get_addr(uid,nick)
 
 
-@crossdomain(origin='*')
 @app.route('/settings/<uid>/<first>/<last>/<address>/<nick>/<phone>/<delivery>/<tip>/<veg>/<gluten>/<allergies>/<card>')
+@crossdomain(origin='*')
 def place_order():
 	return api.order()
 
 @app.route('/newcard/<uid>/<cc>/<exp>/<code>')
+@crossdomain(origin='*')
 def add_card(uid, cc, exp, code):
 	api.addCard(uid, cc, exp, code)
 	return json.dumps({"status":"success"})
 
 
 @app.route('/newaddress/<uid>/<address>')
+@crossdomain(origin='*')
 def add_addr(uid, street, city, zip):
 	api.addCard(uid, street, city, zip)
 	return json.dumps({"status":"success"})
