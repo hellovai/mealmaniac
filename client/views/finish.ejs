@@ -8,7 +8,7 @@
     
   </head>
 
-  <body align="center" class="span6">
+  <body align="center" class="span6" onload="display(); quotePicker()">
 
     <div align="center" class="container span6">
     </div>
@@ -20,11 +20,11 @@
         </a></h1>
       </div>
 
-      <output id="quote"> <h2> <font color="red"> You are a TRUE maniac! </font> </h2> </output>
-      <h3 id="rname"> Restaurant Name </h3>
-      <h3 id="rphone"> Restaurant Phone </h3>
-      <h3 id="dish"> Dish </h3>
-      <h3 id="price"> Price </h3>
+      <h1 id="quote">  </h1>
+      <h3 id="rname"></h2>
+      <h3 id="rphone"> </h3>
+      <h3 id="dish"> </h3>
+      <h3 id="price"></h3>
 
       <form id = "approval" align="center" action ="order">
         <div>
@@ -35,9 +35,32 @@
     </div>    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script >
+      function display() {
+        var order = JSON.parse(localStorage.getItem("order"));
+          if (order["core"].length==undefined) {
+            document.getElementById('dish').innerHTML=order["core"]["name"];
+            document.getElementById('rname').innerHTML=order["core"]["rest"]["name"];
+            document.getElementById('rphone').innerHTML=order["core"]["rest"]["phone"];
+            document.getElementById('price').innerHTML="$"+(parseInt(100*order.total))/100.0;;
+          }
+          else {
+            document.getElementById('dish').innerHTML=order["core"][0]["name"];
+            document.getElementById('rname').innerHTML=order["core"][0]["rest"]["name"];
+            document.getElementById('rphone').innerHTML=order["core"][0]["rest"]["phone"].substring(0,order.total.indexOf(".")+2);
+            document.getElementById('price').innerHTML="$"+(parseInt(100*order.total))/100.0;;
+          }
+      }
       function quotePicker(quote) {
-        //if directed here from "Purchase" then use a you're lame quote
-        //if directed here from "Mania" choose a you're awesome quote
+        var lameness = localStorage.getItem("lameness");
+        if (lameness==0) {
+          document.getElementById("quote").innerHTML="<font color='red'> You are a TRUE maniac! </font>";
+        }
+        else if (lameness==1) {
+          document.getElementById("quote").innerHTML="<font color='gold'>Come on, you just had to hit the red button!</font>";
+        }
+        else if (lameness==2) {
+          document.getElementById("quote").innerHTML="<font color='blue'>Really now? If you actually /font>";
+        }
       }
     </script>
     <script>
