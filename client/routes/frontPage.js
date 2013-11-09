@@ -1,6 +1,6 @@
 
 /*
- * GET home page.
+ * GET front page.
  */
 
 exports.frontPage = function(req, res){
