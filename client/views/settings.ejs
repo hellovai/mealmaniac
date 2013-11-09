@@ -7,7 +7,7 @@
     <!--<link href="grid.css" rel="stylesheet">-->
   </head>
 
-  <body align="center" onLoad="displayAllergies(); displayCards()">
+  <body align="center" onLoad="displayAllergies(); displayCards(); displayAddresses()">
   
   <!--<div align="center" class="container span4">
     
@@ -25,31 +25,31 @@
         <thead></thead>
         <tbody>
           <tr>
-            <td align="center" class="span2">Name</td>
-            <td><input class="span4" type="text" placeholder="" id="name"></td>
+            <td align="center" class="span2">Full Name</td>
+            <td><p><input class="span3" type="text" placeholder="First" id="first" onchange="changeFirst()"><input class="span1" type="text" placeholder="M.I" id="middle" onchange="changeMiddle()"></p>
+              <p><input class="span3" type="text" placeholder="Last" id="name" onchange="changeLast()">
+              </p></td>
+            
           </tr>
           <tr>
             <td align="center" class="span2">Email</td>
-            <td><input class="span4" type="email" placeholder="" id="email"></td>
+            <td><input class="span4" type="email" placeholder="Email" id="email" onchange="changeEmail()"></td>
           </tr>
           <tr>
             <td align="center" class="span2">Telephone</td>
-            <td><input class="span4" type="tel" placeholder="Number" id="phone"></td>
+            <td><input class="span4" type="tel" placeholder="Number" id="phone" onchange="changePhone()"></td>
           </tr>
           <tr>
             <td align="center" class="span2">Address</td>
             <td>
               <select id="addresses">
-                <option value="home">Home</option>
-                <option value="work">Work</option>
-                <option value="dorm">Dorm</option>
               </select>
               <input type="button" value="Add" onclick="addressPopup()">
             </td>
           </tr>
             <td align="center" class="span2">Tip</td>
             <td>  
-              <select id="tip">
+              <select id="tip" onchange="changeTip()">
                 <option value="10">10%</button>
                 <option value="15">15%</button>
                 <option value="20">20%</button>
@@ -68,7 +68,7 @@
           <tr>
             <td class="span2">Restrictions</td>
             <td>
-              <textarea rows="4" cols="40"  id="allergies"></textarea>
+              <textarea rows="4" cols="40"  placeholder="Add additional restrictions here" id="allergies"></textarea>
               <input type="button" value="Add" onclick="addAllergy()">
             </td>
           </tr>
@@ -161,18 +161,54 @@
       }
       function displayAddresses()
       {
-        var addresses = JSON.parse(localStorage.addresses);
+        var addresses = JSON.parse(localStorage.getItem('user')).nicks;
         for (var i=0;i<addresses.length;i++){
-          document.getElementById('addresses').innerHTML+="<option value='"+i+"'>" +addresses[i][0]+"</option>";
+          document.getElementById('addresses').innerHTML+="<option value='"+i+"'>" +addresses[i]+"</option>";
         }
       }
       function exitSettings()
       {
-        window.history.back()
+        window.location="order";
+      }
+      function changeEmail()
+      {
+        var user = JSON.parse(localStorage.getItem('user'));
+          user.email=document.getElementById('email').value;
+          localStorage.setItem('user', JSON.stringify(user));
+      }
+      function changeFirst()
+      {
+          var user = JSON.parse(localStorage.getItem('user'));
+          user.first=document.getElementById('first').value;
+          localStorage.setItem('user', JSON.stringify(user));
+      }
+      function changeLast()
+      {
+          var user = JSON.parse(localStorage.getItem('user'));
+          user.last=document.getElementById('last').value;
+          localStorage.setItem('user', JSON.stringify(user));
+      }
+      function changeMiddle()
+      {
+        var user = JSON.parse(localStorage.getItem('user'));
+          user.middle=document.getElementById('middle').value;
+          localStorage.setItem('user', JSON.stringify(user));
+      }
+      function changePhone()
+      {
+          var user = JSON.parse(localStorage.getItem('user'));
+          user.phone=document.getElementById('phone').value;
+          localStorage.setItem('user', JSON.stringify(user));
+      }
+      function changeTip()
+      {
+          var user = JSON.parse(localStorage.getItem('user'));
+          user.tip=document.getElementById('tip').value;
+          localStorage.setItem('user', JSON.stringify(user));
       }
       function changeVegetarian()
       {
-        var user=localStorage.getItem("user");
+        var user=JSON.parse(localStorage.getItem("user"));
         user.vegetarian =documents.getElementById("vegetarian").value;
         localStorage.setItem(localStorage);
       }
