@@ -1,0 +1,36 @@
+<%= include header %>
+    <div class="container">
+      <h1><a href="">Sign in</a></h1>
+    </div>
+    <form id = "loginForm" align="center" action ="" method="POST">
+      <div>
+        <input type="text" placeholder="First Name" size="20" />
+        <input type="text" placeholder="Last Name" size="20">
+      </div>
+      <div>
+        <input type="email" placeholder="Email Address" size="40" />
+      </div>
+      <div>
+        <input type="password" placeholder="Password" size="40" />
+      </div>
+      <div>
+        <input type="submit" value="Log in" onclick="login()">
+        <input type="submit" value="Sign up" onclick="signup()">
+      </div>
+    </form>
+    <script>
+      form = document.getElementById("loginForm");
+      function login() {
+        form.action = "order.html";
+        form.submit;
+      }
+      function signup() {
+        form.action = "signup.html";
+        form.submit;
+      }
+    </script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src=”js/bootstrap.js”></script>
+
+
+<%= include footer %>
