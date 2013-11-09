@@ -153,8 +153,9 @@ def add_addr(uid, street, city, zip):
 	api.addCard(uid, street, city, zip)
 	return json.dumps({"status":"success"})
 
-@crossdomain(origin='*')
+
 @app.route('/login/<email>/<pwd>')
+@crossdomain(origin='*')
 def login(email, pwd):
 	uid = api.getUid(email, pwd)
 	user = api.getUser(uid)
@@ -217,4 +218,4 @@ def getMeal(uid, price, nick):
 	return json.dumps({"core":meals, "total": spent * 1.0875 * (1 + float(user["tip"])/100) })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001)
