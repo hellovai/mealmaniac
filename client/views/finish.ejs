@@ -18,7 +18,7 @@
       <h3 id="price"></h3>
       </font>
 
-      <select id="details"></select>
+      <!-- <select id="details"></select> -->
       <form id = "approval" align="center" action ="order">
         <div>
           <input type="image" src = "http://upload.wikimedia.org/wikipedia/commons/1/13/Facebook_like_thumb.png" height="50" width="50" onclick="like()">
@@ -40,7 +40,7 @@
           else {
             document.getElementById('dish').innerHTML=order["core"][0]["name"];
             document.getElementById('rname').innerHTML=order["core"][0]["rest"]["name"];
-            document.getElementById('rphone').innerHTML=order["core"][0]["rest"]["phone"].substring(0,order.total.indexOf(".")+2);
+            document.getElementById('rphone').innerHTML=order["core"][0]["rest"]["phone"];
             document.getElementById('price').innerHTML="$"+(parseInt(100*order.total))/100.0;;
           }
       }
