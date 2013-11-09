@@ -3,71 +3,89 @@
   <head>
     <meta charset="utf-8">
     <title>Header</title>
-    <!--<style type="text/css" src="../public/css/bootstrap.css"></style>
-    <!- HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- styles -->
-    <link href="stylesheets/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../public/css/bootstrap.css">
-
+    <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css"></link>
+    <!--<link href="grid.css" rel="stylesheet">-->
   </head>
-  <body onLoad="displayCards();displayAllergies();displayAddresses()">
-  <form id="settings" align="center" method="POST">
-    <div>
-      <input type="text" placeholder="First Name" id="firstName" size="20"/>
-      <input type="text" placeholder="Last Name" id="lastName" size="20"/>
+
+  <body align="center" onLoad="displayCards();displayAllergies();displayAddresses()">
+  
+  <!--<div align="center" class="container span4">
+    
+  </div>-->
+
+  <div align="center" class="container span6">
+    <div class="page-header">
+      <h1><img src="http://i.picresize.com/images/2013/11/09/L0awx.png"/> Settings</h1>
     </div>
-    <div>
-      <input type="email" placeholder="Email Address" id="email" size="40"/>
-    </div>
-    <div>
-      <input type="tel" placeholder="Phone Number" id="phoneNumber" size="40"/>
-    </div>
-    <div>
-      Address
-      <select id="addresses">
-      </select>
-    </div>
-    <div>
-      Delivery Time :   
-      <input type="number" min="30" max="120" value="60" size="3" step="5"/>
-    </div>
-    <div>
-      Tip :
-      <input type="number" min="10" max="100" value="15" size="3" step="1"/>
-    </div>
-    <div>
-      Vegetarian? 
-      Yes <input type="radio" name="group1" value="Yes">
-      No <input type="radio" name="group1" value="No" checked>
-    </div>
-    <div>
-      Gluten-Free? 
-      Yes <input type="radio" name="group2" value="Yes">
-      No <input type="radio" name="group2" value="No" checked>
-    </div>
-    <div>Other Allergies:</div>
-    <div>
-      <textarea rows="4" cols="40"  id="allergies"></textarea>
-      <input type="button" value="Add" onclick="addAllergy()">
-    </div>
-    <div>
-      Which Card?
-      <select id="creditCardList"></select>
-    </div>
-    <div>
-      <input type="button" value="Add New Address" onclick="addAddress()">
-    </div>
-    <div>
-      <input type="button" value="Add New Credit Card" onclick="addCard()">
+    <form id="settings" method="POST">
+      <table class="table table-striped table-bordered" >
+        <thead></thead>
+        <tbody>
+          <tr>
+            <td align="center" class="span2">Name</td>
+            <td><input class="span4" type="text" placeholder="" ></td>
+          </tr>
+          <tr>
+            <td align="center" class="span2">Email</td>
+            <td><input class="span4" type="email" placeholder="" ></td>
+          </tr>
+          <tr>
+            <td align="center" class="span2">Telephone</td>
+            <td><input class="span4" type="tel" placeholder="Number" ></td>
+          </tr>
+          <tr>
+            <td align="center" class="span2">Address</td>
+            <td>
+              <select id="addresses">
+                <option value="home">Home</option>
+                <option value="work">Work</option>
+                <option value="dorm">Dorm</option>
+              </select>
+              <input type="button" value="Add" onclick="addAllergy()">
+            </td>
+          </tr>
+            <td align="center" class="span2">Tip</td>
+            <td>  
+              <select id="tip">
+                <option value="10">10%</button>
+                <option value="15">15%</button>
+                <option value="20">20%</button>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="span2">Vegetarian</td>
+            <td>  
+              YES <input type="radio" name="group1" value="Yes">
+              NO <input type="radio" name="group1" value="No" checked>
+            </td>
+          </tr>
+          <tr>
+            <td class="span2">Restrictions</td>
+            <td>
+              <textarea rows="4" cols="40"  id="allergies"></textarea>
+              <input type="button" value="Add" onclick="addAllergy()">
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="span2">Cards</td>
+            <td>
+              <select id="cards">
+                <option value="5432">5432</option>
+                <option value="2943">2943</option>
+                <option value="1284">1284</option>
+              </select>
+              <input type="button" value="Add" onclick="addCard()">
+            </td>
+          </tr>    
+          </tbody>
+        </table>
+        <!-- <a href="" class="btn btn-large btn-danger" onclick="goBack()">Go Back</a> -->
+      </form>
     </div>
     <script>
       function addAllergy() {
         localStorage.setItem('allergies', document.getElementById('allergies').value);
-
       }
       function addAddress() {
         window.prompt(localStorage.addresses.length);
@@ -109,15 +127,10 @@
           document.getElementById('addresses').innerHTML+="<option value='"+i+"'>" +addresses[i][0]+"</option>";
         }
       }
-    </script>
-  </form>
-  <script>
-function goBack()
-  {
-  window.history.back()
-  }
-</script>
-
-<button onclick="goBack()">Go Back</button>
-</body>
-</html>
+      function goBack()
+      {
+        window.history.back()
+      }
+      </script>
+    </form> 
+<%= include footer %>
