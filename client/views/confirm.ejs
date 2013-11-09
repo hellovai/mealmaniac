@@ -14,44 +14,46 @@
     <link rel="stylesheet" type="text/css" href="../public/css/bootstrap.css">
 
   </head>
-  <body align="center">
+  <body align="center" onload="setValue">
     <div>
       Meal Maniac
       <a href="settings">
         <img src="http://files.softicons.com/download/system-icons/web0.2ama-icons-by-chrfb/png/96x96/Settings.png" height="20" width="20" align="right" class="img-responsive" alt="Responsive image">
       </a>
     </div>
-    <div>
-     <select id = "addressList">
-     </select>
-     <script>
-      
-      function displayAddresses(){
-        var addresses = JSON.parse(localStorage.addresses);
-        for (var i=0;i<addresses.length;i++){
-          document.getElementById('addressList').innerHTML+="<option value='"+i+"'>" +addresses[i][0]+"</option>";
-        }
-      }
-     </script>
-   </div>
-    <div>
-      <input type=range id='priceslider' min=0 max=50 value=25 step=1 onchange="outputUpdate(value)">
-    </div>
-    <div>
-      $<output id=price>25</output>
-      <script>
-
-        function outputUpdate(price) {
-        document.querySelector('#price').value = price;
-        }
-      </script>
+    <div >
+	    <div>
+	      <input type=range id='priceslider' min=0 max=50 value=25 step=1 onchange="outputUpdate(value)">
+	    </div>
+	    <div>
+	      $<output id=price>25</output>
+	      <script>
+	      	function setValue()
+	      	{
+	      		document.querySelector('#price').value = localStorage.getItem('price');
+	      	}
+	        function outputUpdate(price) {
+	        	document.querySelector('#price').value = price;
+	        }
+	      </script>
+	    </div>
+	    <input type="button" value="PURCHASE" onclick="purchase()">
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	    <script>
+	    	function purchase()
+	    	{
+	    		window.location="finish";
+	    	}
+	    </script>
     </div>
     <span style="white-space:nowrap">
-      <img style="float:left" src="https://cdn1.iconfinder.com/data/icons/socialmediabookmark/buttons/facebook_button.png" height="21" width="61" class="img-responsive" alt="Responsive image">
+      <div style="float:left">
+        <input type="button" value="MANIA" onclick="">
+      </div>
       <div style="float:right">
 
         <input type="button" value="GO" onclick="urlChange()">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        
         <script>
           function urlChange() {
             var user = JSON.parse(localStorage.getItem('user'));
@@ -63,7 +65,8 @@
             .done(function (data) {
               localStorage.setItem('order', JSON.stringify(data));
             });
-            window.location = "finish";
+            localStorage.setItem('currentPrice', price);
+            window.location = "confirm";
             
           }
         </script>
