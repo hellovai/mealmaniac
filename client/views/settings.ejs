@@ -7,7 +7,7 @@
     <!--<link href="grid.css" rel="stylesheet">-->
   </head>
 
-  <body align="center" onLoad="displayAllergies();">
+  <body align="center" onLoad="displayAllergies(); displayCards()">
   
   <!--<div align="center" class="container span4">
     
@@ -152,7 +152,7 @@
       {
         var creditCards = JSON.parse(localStorage.getItem('user')).cards;
         for (var i=0;i<creditCards.length;i++){
-          document.getElementById('cards').innerHTML+="<option value='"+i+"'>" +creditCards[i]+"</option>";
+          document.getElementById('cards').innerHTML+="<option value='"+i+"'>" +creditCards[i].number+"</option>";
         }
       }
       function displayAllergies()
