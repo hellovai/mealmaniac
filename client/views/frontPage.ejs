@@ -1,6 +1,6 @@
 <%= include header %>
 
-<body style="background-color:#FFFFFF">
+<body style="background-color:#A40004">
   
   <div align="center">
     </br>
@@ -13,16 +13,17 @@
       <input type="password" id="password" placeholder="Password">
     </form>
     <div>
-      <a href="#" class="btn btn-large btn-danger" onclick="login()">Log in</a>
-      <a href="#" class="btn btn-large btn-danger" onclick="signup()">Sign up</a>
+      <button type="button" class="btn btn-large btn-danger" onclick="login()">Log in</a>
+      <button type="button" class="btn btn-large btn-danger" onclick="signup()">Sign up</a>
     </div>
   </div>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
   </script>
     <script>
-      var base_url = "http://ec2-54-200-88-29.us-west-2.compute.amazonaws.com:8080/";
+      var base_url = "http://mealmaniac.com:8080/";
       form = document.getElementById("loginForm");
       function login() {
+        
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
         $.ajax({
@@ -31,9 +32,7 @@
         .done(function (data) {
           localStorage.setItem('user', JSON.stringify(data))
         });
-        localStorage.setItem('logged-in', 'yes');
-        if(JSON.parse(localStorage.getItem('user'))['id'] !=0) window.location="order";
-
+        window.location="order";
       }
       function signup() {
         var email = document.getElementById('email').value;
@@ -44,7 +43,9 @@
         .done(function (data) {
           localStorage.setItem('user', JSON.stringify(data))
         });
-        var user = JSON.parse(localStorage.getItem('user'));
+        user = JSON.parse(localStorage.getItem('user'));
+        user.email=email;
+        user.password=password;
         user.addresses=new Array();
         user.nicks=new Array();
         user.restrictions="";
@@ -58,7 +59,7 @@
         user.phone="";
         user.email="";
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('logged-in', 'yes');
+        console.log(localStorage.getItem('user'));
         window.location="settings";
       }
     </script>
