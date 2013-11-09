@@ -1,6 +1,7 @@
 import random
 import urllib2
 import json
+import datetime
 
 base_url = "https://r-test.ordr.in/"
 api_key = "JSxnQl1yk5bIHYUgfubPm6KY4OS_Frwq7-iawxqmoIs"
@@ -51,9 +52,29 @@ def getUser(email):
                                 }
         return users[email]
 
+def valid(item):
+        today = set([datetime.datetime.now().strftime("%A").lower()])
+        other = set(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]).difference(today)
+        t = set(item["name"].lower().split(' '))
+        if len(t.intersection(today)) > 0:
+                return True
+        elif len(t.intersection(other)) > 0:
+                return False
+        return True        
+
+def checkFlexibility(title):
+        bad = set(["choice", "use"])
+        good = set(["extra", "extras", "choices"])
+        t = set(title.lower().split(' '))
+        if len(t.intersection(good)) > 0:
+                return True
+        elif len(t.intersection(bad)) > 0:
+                return False
+        return True
+
 def cuisineCheck(cuisines, userid):
         global x
-        # return True
+        return True
         x = x + 1
         if x % 5 == 4:
                 return True
