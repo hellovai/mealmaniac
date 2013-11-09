@@ -9,7 +9,7 @@ var path = require('path');
 var app = express();
 var user = require('./routes/user');
 var server = require('http').createServer(app);
-server.listen(3000);
+server.listen(80);
 
 // all environments
 app.set('views', path.join(__dirname, 'views'));
