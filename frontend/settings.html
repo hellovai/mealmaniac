@@ -1,0 +1,45 @@
+<!DOCTYPE html> 
+<html>  
+  <head>
+    <title>Meal MANIAC</title>
+    <script src="http://www.google.com/jsapi"></script>
+    <script>
+      google.load("jquery", "1.4.1");
+    </script>
+    <h1 align="center"> Meal Maniac
+      <img src = "http://www.clker.com/cliparts/j/V/R/4/3/s/cog-cogwheel-gear-zahnrad-md.png" height="20" width="20">
+    </h1>
+    <h2 align="center">
+    Settings
+    </h2>
+  </head>
+  <body>
+  <form id="save" align="center" method="POST">
+    <div>
+      <input type="text" placeholder="First Name" size="20"/>
+      <input type="text" placeholder="Last Name" size="20"/>
+    </div>
+    <div>
+      <input type="email" placeholder="Email Address" size="40"/>
+    </div>
+    <div>
+      <input type="tel" placeholder="Phone Number" size="40"/>
+    </div>
+    <div>
+      Delivery Time :   
+      <input type="number" min="30" value="60" size="3" step="5"/>
+    </div>
+    <div>
+      Tip :
+      <input type="number" min="10" max="100" value="15" size="3" step="1"/>
+    </div>
+    <div>
+      Vegetarian? 
+      Yes <input type="radio" name="group1" value="Yes">
+      No <input type="radio" name="group1" value="No" checked>
+    </div>
+  </form>
+    
+
+  </body>
+</html>
