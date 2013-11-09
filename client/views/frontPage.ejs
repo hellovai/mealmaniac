@@ -17,42 +17,47 @@
       <a href="#" class="btn btn-large btn-danger" onclick="signup()">Sign up</a>
     </div>
   </div>
-  
-
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
   </script>
-  <script>
-    var base_url = "http://localhost:5000/";
-    form = document.getElementById("loginForm");
-    function login() {
-      var email = document.getElementById('email').value;
-      var password = document.getElementById('password').value;
-      $.ajax({
-        url:base_url + "login/" + email + "/" + password
-      })
-      .done(function (data) {
-        localStorage.setItem('user', JSON.stringify(data))
-      });
-      if(JSON.parse(localStorage.getItem('user'))['id'] !=0) window.location="order";
-    }
-    function signup() {
-      var email = document.getElementById('email').value;
-      var password = document.getElementById('password').value;
-      $.ajax({
-        url:base_url + "signup/" + email + "/" + password
-      })
-      .done(function (data) {
-        localStorage.setItem('user', JSON.stringify(data))
-      });
-      var user = JSON.parse(localStorage.getItem('user'));
-      user.addresses=new Array();
-      user.nicks=new Array();
-      user.restrictions="";
-      user.cards=new Array();
-      user.vegetarian="No";
-      user.gluten="No";
-      localStorage.setItem('user', JSON.stringify(user));
-      window.location="settings";
-    }
-  </script>
-  <%= include footer %>
+    <script>
+      var base_url = "http://localhost:5000/";
+      form = document.getElementById("loginForm");
+      function login() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        $.ajax({
+          url:base_url + "login/" + email + "/" + password
+        })
+        .done(function (data) {
+          localStorage.setItem('user', JSON.stringify(data))
+        });
+        if(JSON.parse(localStorage.getItem('user'))['id'] !=0) window.location="order";
+      }
+      function signup() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        $.ajax({
+          url:base_url + "signup/" + email + "/" + password
+        })
+        .done(function (data) {
+          localStorage.setItem('user', JSON.stringify(data))
+        });
+        var user = JSON.parse(localStorage.getItem('user'));
+        user.addresses=new Array();
+        user.nicks=new Array();
+        user.restrictions="";
+        user.cards=new Array();
+        user.vegetarian="No";
+        user.gluten="No";
+        user.tip="10";
+        user.first="";
+        user.middle="";
+        user.last="";
+        user.phone="";
+        user.email="";
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location="settings";
+      }
+    </script>
+    
+<%= include footer %>
