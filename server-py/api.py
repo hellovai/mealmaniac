@@ -6,7 +6,7 @@ import datetime
 base_url = "https://r-test.ordr.in/"
 api_key = "JSxnQl1yk5bIHYUgfubPm6KY4OS_Frwq7-iawxqmoIs"
 
-email = {}
+email_db = {}
 users = {}
 restaurants = {}
 x = 0
