@@ -19,13 +19,13 @@
 
     <div align="center" class="container span6">
       <div id="orderPopUp" class = "hidden popup span6"></br></br></br></br></br></br>
-    <p><a href="#" class="btn btn-large btn-warning" onclick="">Purchase</a></p>
+    <p><a href="#" class="btn btn-large btn-warning" onclick="continueOn()">Purchase</a></p>
     <font color="black"><strong><p id="dishname"></p>
     <p id="restaurant"></p>
     <p id="totalprice"></p></strong></font>
     <div align="center">
-          <a href="#" class="btn btn-large btn-danger" onclick="backToMenu()">Go Back</a>
-          <a href="#" class="btn btn-large btn-success offset1" onclick="">Try Again</a>
+          <button type="button" class="btn btn-large btn-danger" onclick="backToMenu()">Go Back</a>
+          <button type="button" class="btn btn-large btn-success offset1" onclick="showMeal()">Try Again</a>
     </div>
 
   </div>
@@ -57,8 +57,8 @@
       </h1>
       <span style="white-space:nowrap">
         <div align="center">
-          <a href="#" class="btn btn-large btn-danger" onclick="">MANIA</a>
-          <a href="#" class="btn btn-large btn-success offset1" onclick="orderPopup(); showMeal()">GO</a>
+          <a href="#" class="btn btn-large btn-danger" onclick="maniaTime()">MANIA</a>
+          <a href="#" class="btn btn-large btn-success offset1" onclick="orderPopup(); lameTime(); showMeal()">GO</a>
           <script>
           function orderPopup()
               {
@@ -81,22 +81,38 @@
  -->
           <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
           <script>
+            function maniaTime()
+            {
+              localStorage.setItem("lameness", 0);
+              window.location="finish";
+            }
+            function lameTime()
+            {
+              localStorage.setItem("lameness", 1);
+            }
             function showMeal() {
-              var user = JSON.parse(localStorage.getItem('user'));
+              var user = JSON.parse(localStorage.getItem("user"));
               var base_url = "http://localhost:5000/";
-              var price = document.getElementById('price').value;
+              var price = document.getElementById("price").value;
               $.ajax({
                 url:base_url + "meal/" + user['id'] + "/" + price +"/"+localStorage.currentAddress
               })
               .done(function (data) {
-                localStorage.setItem('order', JSON.stringify(data));
-
+                localStorage.setItem("order", JSON.stringify(data));
+                console.log(localStorage.getItem("order"));
               });
-              var order = JSON.parse(localStorage.getItem('order'));
-                
-                document.getElementById('dishname').innerHTML+=order.core.name;
-                document.getElementById('restaurant').innerHTML+=order.core.rest.name;
-                document.getElementById('totalprice').innerHTML+=order.total;
+
+              var order = JSON.parse(localStorage.getItem("order"));
+              if (order["core"].length==undefined) {
+                document.getElementById('dishname').innerHTML=order["core"]["name"];
+                document.getElementById('restaurant').innerHTML=order["core"]["rest"]["name"];
+                document.getElementById('totalprice').innerHTML="$"+(parseInt(100*order.total))/100.0;
+              }
+              else {
+                document.getElementById('dishname').innerHTML=order["core"][0]["name"];
+                document.getElementById('restaurant').innerHTML=order["core"][0]["rest"]["name"];
+                document.getElementById('totalprice').innerHTML="$"+(parseInt(100*order.total))/100.0;
+              }
             }
             function displayAddresses()
             {
@@ -111,9 +127,16 @@
                 var choice = document.getElementById('addressList').value;
                 localStorage.setItem('currentAddress', JSON.parse(localStorage.getItem('user')).nicks[choice]);
             }
+            function continueOn()
+            {
+              window.location="finish";
+            }
           </script>
         </div>
       </span>
       </div>
     </div>
-<%= include footer %>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="../public/js/bootstrap.js"></script>
+  </body>
+</html>
