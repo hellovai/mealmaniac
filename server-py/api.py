@@ -53,7 +53,7 @@ def getUser(email):
 
 def cuisineCheck(cuisines, userid):
         global x
-        # return True
+        return True
         x = x + 1
         if x % 5 == 4:
                 return True

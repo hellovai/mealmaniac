@@ -58,6 +58,14 @@ class meal(object):
 		self.price = price
 		self.options = {}
 
+	def toDict(self):
+		return {
+			"id":self.id,
+			"name":self.name,
+			"price":self.price,
+			"options":self.options
+		}
+
 	def addOption(self, key, option, choice=True):
 		if key not in self.options:
 			self.options[key] = {"choice":choice, "data":[]}
@@ -77,16 +85,25 @@ def login(email, pwd):
 @crossdomain(origin='*')
 @app.route('/meal/<uid>/<price>/<nick>')
 def getMeal(uid, price, nick):
+	user = api.getUser(uid)
 	nearby = api.search(nick)
+	price = int(10000 * float(price) / (100 + float(user["tip"]))) / 100.0
+	print price
 	# return json.dumps(nearby)
 	choices = []
 	for rest in nearby:
-		if rest["mino"] <= int(price) and rest["is_delivering"] == 1:
+		if rest["mino"] <= price and rest["is_delivering"] == 1:
 			rest_data = api.getDetails(rest["id"])
 			if api.cuisineCheck(rest_data["cuisine"], uid):
 				for category in rest_data["menu"]:
 					for listing in category["children"]:
-						choices.append(meal(listings["price"]))
+						if float(listing["price"]) < price:
+							foodItem = meal(listing["id"],listing["name"],listing["price"])
+							for option in listing["children"]:
+								force = False
+								if "Choices" in option["name"]:
+									force = True
+							choices.append(foodItem.toDict())
 						# for options in listings["children"]:
 	return json.dumps(choices)
 
