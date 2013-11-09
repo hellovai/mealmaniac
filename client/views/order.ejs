@@ -96,11 +96,10 @@
               localStorage.setItem("lameness", 1);
             }
             function showMeal() {
-              var user = JSON.parse(localStorage.getItem("user"));
-              var base_url = "http://ec2-54-200-88-29.us-west-2.compute.amazonaws.com:8080/";
+              var base_url = "http://http://mealmaniac.com:8080/";
               var price = document.getElementById("price").value;
               $.ajax({
-                url:base_url + "meal/" + user['id'] + "/" + price +"/"+localStorage.currentAddress
+                url:base_url + "meal/" + 7447 + "/" + price +"/"+"Home"
               })
               .done(function (data) {
                 localStorage.setItem("order", JSON.stringify(data));

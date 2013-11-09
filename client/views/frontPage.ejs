@@ -37,13 +37,14 @@
       function signup() {
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
-        $.ajax({
+        /*$.ajax({
           url:base_url + "signup/" + email + "/" + password
         })
         .done(function (data) {
           localStorage.setItem('user', JSON.stringify(data))
-        });
-        user = JSON.parse(localStorage.getItem('user'));
+        });*/
+        //user = JSON.parse(localStorage.getItem('user'));
+        user =new Object();
         user.email=email;
         user.password=password;
         user.addresses=new Array();
