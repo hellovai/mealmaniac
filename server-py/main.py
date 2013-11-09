@@ -218,4 +218,4 @@ def getMeal(uid, price, nick):
 	return json.dumps({"core":meals, "total": spent * 1.0875 * (1 + float(user["tip"])/100) })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=8080)
