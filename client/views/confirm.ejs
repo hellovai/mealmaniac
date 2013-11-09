@@ -57,7 +57,7 @@
         <script>
           function urlChange() {
             var user = JSON.parse(localStorage.getItem('user'));
-            var base_url = "http://localhost:5000/";
+            var base_url = "http://ec2-54-200-88-29.us-west-2.compute.amazonaws.com:8080/";
             var price = document.getElementById('price').value;
             $.ajax({
               url:base_url + "meal/" + user['id'] + "/" + price +"/"+"trolol"

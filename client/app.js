@@ -30,7 +30,6 @@ if ('development' == app.get('env')) {
 app.get('/', function(req, res) {
   res.render('frontPage', { title: 'The Front Page!' })
 });
-
 app.get('/confirm', function(req, res) {
 	res.render('confirm', {title: 'Confirm Order'})
 });
