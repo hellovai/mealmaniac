@@ -20,12 +20,23 @@
       </a>
     </div>
     <div>
-     <select id = "addressList">
+     <select id = "addressList" onclick="displayOptions()">
        <option value = "1">Home</option>
        <option value = "2">School</option>
        <option value = "3">Drug den</option>
        <option value = "4">Hotel</option>
      </select>
+     <script>
+      
+      function displayOptions(){
+        alert("this is working");
+        document.getElementById('addressList').innerHTML+="<option value='10'>Testcase</option>";
+        var addresses = localStorage["addresses"]
+        for (int i=0;i<addresses.length;i++){
+          document.getElementById('addressList').innerHTHML+="<option value = '"+i+"'>" +addresses[i]+"</option>";
+        }
+      }
+     </script>
    </div>
     <div>
       <input type=range min=0 max=50 value=25 step=1 onchange="outputUpdate(value)">
