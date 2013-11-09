@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Header</title>
-    <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css"></link>
-    <!--<link href="grid.css" rel="stylesheet">-->
-  </head>
-
+<%= include header %>
   
   <body align="center" class="span6" onload="displayAddresses()" style="background-color:#A40004">
 <style>
@@ -57,9 +49,9 @@
         </script>
       </h1>
       <span style="white-space:nowrap">
-        <div align="center">
-          <a href="#" class="btn btn-large btn-info" onclick="maniaTime()"><font color="red"> MANIA </font></a>
-          <a href="#" class="btn btn-large btn-success offset1" onclick="orderPopup(); lameTime(); showMeal()">GO</a>
+        <div align="span12">
+          <a href="#" class="text-center offset1 span1 btn btn-large btn-default" onclick="orderPopup(); lameTime(); showMeal()">Suggest</a>
+          <a href="#" class="span1 btn btn-large btn-success" onclick="maniaTime()">MANIA</a>
           <script>
           function orderPopup()
               {
