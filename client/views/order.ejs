@@ -120,16 +120,11 @@
             }
             function displayAddresses()
             {
-              localStorage.setItem('currentAddress', JSON.parse(localStorage.getItem('user')).nicks[0]);
-              var addresses = JSON.parse(localStorage.getItem('user')).nicks;
-              for (var i=0;i<addresses.length;i++){
-                document.getElementById('addressList').innerHTML+="<option value='"+i+"'>" +addresses[i]+"</option>";
-              }
+              
             }
             function selectCurrentAddress()
             {
-                var choice = document.getElementById('addressList').value;
-                localStorage.setItem('currentAddress', JSON.parse(localStorage.getItem('user')).nicks[choice]);
+                
             }
             function continueOn()
             {
