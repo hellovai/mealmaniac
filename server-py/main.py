@@ -3,7 +3,7 @@ import json
 from datetime import timedelta
 from flask import Flask, make_response, request, current_app
 from functools import update_wrapper
-
+import random
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -51,11 +51,12 @@ app = Flask(__name__)
 
 class meal(object):
 	"""docstring for meal"""
-	def __init__(self, itemid, name, price):
+	def __init__(self, item):
 		super(meal, self).__init__()
-		self.id = itemid
-		self.name = name
-		self.price = price
+		self.id = item["id"]
+		self.name = item["name"]
+		self.price = item["price"]
+		self.desc = item["descrip"]
 		self.options = {}
 
 	def toDict(self):
@@ -63,12 +64,13 @@ class meal(object):
 			"id":self.id,
 			"name":self.name,
 			"price":self.price,
+			"desc":self.desc,
 			"options":self.options
 		}
 
 	def addOption(self, key, option, choice=True):
 		if key not in self.options:
-			self.options[key] = {"choice":choice, "data":[]}
+			self.options[key] = {"flexible":choice, "data":[]}
 		self.options[key]["data"].append(option)
 		
 @crossdomain(origin='*')
@@ -98,14 +100,19 @@ def getMeal(uid, price, nick):
 				for category in rest_data["menu"]:
 					for listing in category["children"]:
 						if float(listing["price"]) < price:
-							foodItem = meal(listing["id"],listing["name"],listing["price"])
-							for option in listing["children"]:
-								force = False
-								if "Choices" in option["name"]:
-									force = True
+							foodItem = meal(listing)
+							if "children" in listing:
+								for option in listing["children"]:
+									if api.valid(option):
+										title = option["name"]
+										flex = api.checkFlexibility(title)
+										if "children" in option:
+											for op in option["children"]:
+												optionItem = meal( op )
+												foodItem.addOption(title, optionItem.toDict(), flex)
 							choices.append(foodItem.toDict())
-						# for options in listings["children"]:
-	return json.dumps(choices)
+	random_index = random.randrange(len(choices))
+	return json.dumps(choices[random_index])
 
 if __name__ == '__main__':
     app.run(debug=True)
