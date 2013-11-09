@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Header</title>
+    <!--<style type="text/css" src="../public/css/bootstrap.css"></style>
+    <!- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- styles -->
+    <link href="stylesheets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../public/css/bootstrap.css">
+
+  </head>
+  <body onLoad="displayCards();displayAllergies();displayAddresses()">
+  <form id="settings" align="center" method="POST">
+    <div>
+      <input type="text" placeholder="First Name" id="firstName" size="20"/>
+      <input type="text" placeholder="Last Name" id="lastName" size="20"/>
+    </div>
+    <div>
+      <input type="email" placeholder="Email Address" id="email" size="40"/>
+    </div>
+    <div>
+      <input type="tel" placeholder="Phone Number" id="phoneNumber" size="40"/>
+    </div>
+    <div>
+      Address
+      <select id="addresses">
+      </select>
+    </div>
+    <div>
+      Delivery Time :   
+      <input type="number" min="30" max="120" value="60" size="3" step="5"/>
+    </div>
+    <div>
+      Tip :
+      <input type="number" min="10" max="100" value="15" size="3" step="1"/>
+    </div>
+    <div>
+      Vegetarian? 
+      Yes <input type="radio" name="group1" value="Yes">
+      No <input type="radio" name="group1" value="No" checked>
+    </div>
+    <div>
+      Gluten-Free? 
+      Yes <input type="radio" name="group2" value="Yes">
+      No <input type="radio" name="group2" value="No" checked>
+    </div>
+    <div>Other Allergies:</div>
+    <div>
+      <textarea rows="4" cols="40"  id="allergies"></textarea>
+      <input type="button" value="Add" onclick="addAllergy()">
+    </div>
+    <div>
+      Which Card?
+      <select id="creditCardList"></select>
+    </div>
+    <div>
+      <input type="button" value="Add New Address" onclick="addAddress()">
+    </div>
+    <div>
+      <input type="button" value="Add New Credit Card" onclick="addCard()">
+    </div>
+    <script>
+      function addAllergy() {
+        localStorage.setItem('allergies', document.getElementById('allergies').value);
+
+      }
+      function addAddress() {
+        window.prompt(localStorage.addresses.length);
+        var newAddress = window.prompt("Enter address:");
+        var newNickname = window.prompt("Enter nickname:");
+        addresses = JSON.parse(localStorage.addresses);
+        window.notify(addresses[0][0]);
+        var newIndex =addresses.length;
+        addresses[newIndex]=[];
+        addresses[newIndex][0]=newAddress;
+        addresses[newIndex][1]=newNickname;
+        window.notify(addresses[0][0]);
+        localStorage.addresses=JSON.stringify(addresses);
+        window.notify(addresses[0][0]);
+      }
+      function addCard() {
+        var newCreditCard = window.prompt("Enter new credit card number:");
+        var creditCards = JSON.parse(localStorage.creditCards);
+        var newIndex =creditCards.length;
+        creditCards[newIndex]=newCreditCard;
+        localStorage.creditCards=JSON.stringify(creditCards);
+        displayCards();
+      }
+      function displayCards()
+      {
+        var creditCards = JSON.parse(localStorage.creditCards);
+        for (var i=0;i<creditCards.length;i++){
+          document.getElementById('creditCardList').innerHTML+="<option value='"+i+"'>" +creditCards[i]+"</option>";
+        }
+      }
+      function displayAllergies()
+      {
+        if(localStorage.allergies!==null)document.getElementById('allergies').value=localStorage.allergies;
+      }
+      function displayAddresses()
+      {
+        var addresses = JSON.parse(localStorage.addresses);
+        for (var i=0;i<addresses.length;i++){
+          document.getElementById('addresses').innerHTML+="<option value='"+i+"'>" +addresses[i][0]+"</option>";
+        }
+      }
+    </script>
+  </form>
+  <script>
+function goBack()
+  {
+  window.history.back()
+  }
+</script>
+
+<button onclick="goBack()">Go Back</button>
+</body>
+</html>
