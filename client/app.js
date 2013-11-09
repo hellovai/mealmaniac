@@ -35,3 +35,9 @@ app.get('/order', function(req, res) {
 	res.render('order', { title: 'Order Here!'});
 });
 
+app.get('/settings', function(req, res) {
+	res.render('settings', { title: 'Settings'});
+});
+app.get('/finish', function(req, res) {
+	res.render('finish', { title: 'Finish Order'});
+});
