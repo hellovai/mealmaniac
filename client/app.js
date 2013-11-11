@@ -28,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get("*", function (req, res) {
-	res.render('signup');
+	res.redirect('http://signup.mealmaniac.com');
 })
 
 // app.get('/', function(req, res) {
