@@ -27,24 +27,21 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get("*", function (req, res) {
-	res.redirect('http://signup.mealmaniac.com');
-})
 
-// app.get('/', function(req, res) {
-//   res.render('frontPage', { title: 'The Front Page!' })
-// });
-// app.get('/confirm', function(req, res) {
-// 	res.render('confirm', {title: 'Confirm Order'})
-// });
+ app.get('/', function(req, res) {
+   res.render('frontPage', { title: 'The Front Page!' })
+ });
+ app.get('/confirm', function(req, res) {
+ 	res.render('confirm', {title: 'Confirm Order'})
+ });
 
-// app.get('/order', function(req, res) {
-// 	res.render('order', { title: 'Order Here!'});
-// });
+ app.get('/order', function(req, res) {
+ 	res.render('order', { title: 'Order Here!'});
+ });
 
-// app.get('/settings', function(req, res) {
-// 	res.render('settings', { title: 'Settings'});
-// });
-// app.get('/finish', function(req, res) {
-// 	res.render('finish', { title: 'Finish Order'});
-// });
+ app.get('/settings', function(req, res) {
+ 	res.render('settings', { title: 'Settings'});
+ });
+ app.get('/finish', function(req, res) {
+ 	res.render('finish', { title: 'Finish Order'});
+ });
